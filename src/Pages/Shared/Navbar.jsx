@@ -27,12 +27,18 @@ const menu = (
   <Link to="/leaderboard">
     <li className="nav-glow">Leaderboard</li>
   </Link>
+
+
+  {
+    user && <> 
   <Link to="/add_contest">
     <li className="nav-glow">Add Contest</li>
   </Link>
   <Link to="/dashboard">
     <li className="nav-glow">Dashboard</li>
   </Link>
+    </>
+  }
   </>
 );
 

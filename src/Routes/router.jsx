@@ -9,6 +9,9 @@ import AddContest from "../Pages/AddContest/AddContest";
 import AllContests from "../Pages/AllContests/AllContests";
 import Leaderboard from "../Pages/Leaderboard/Leaderboard";
 import PrivateRoute from "./PrivateRoute";
+import DashboardLayout from "../Layouts/DashboardLayout";
+import ManageUsers from "../Pages/Admin/ManageUsers";
+import ManageContests from "../Pages/Admin/ManageContests";
 
 
 
@@ -31,10 +34,10 @@ export const router = createBrowserRouter([
                 index: true,
                 Component: Home
             },
-            {
-                path: 'dashboard',
-                Component: DashboardHome
-            },
+            // {
+            //     path: 'dashboard',
+            //     Component: DashboardHome
+            // },
             {
                 path: 'add_contest',
                 // Component: AddContest
@@ -67,5 +70,25 @@ export const router = createBrowserRouter([
                 Component: Register
             },
         ]
-    }
+    },
+    {
+        path: 'dashboard',
+        element: <PrivateRoute>
+            <DashboardLayout></DashboardLayout>
+        </PrivateRoute>,
+        children: [
+            {
+                path: "dashboard",
+                Component: DashboardHome
+            },
+            {
+                path: "manage_users",
+                Component: ManageUsers
+            },
+            {
+                path: "manage_contests",
+                Component: ManageContests
+            },
+        ]
+    },
 ])
