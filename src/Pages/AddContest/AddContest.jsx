@@ -1,20 +1,27 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
 import useAxiosSecure from '../../hooks/useAxiosSecure';
-// import useAuth from '../../hooks/useAuth';
+import useAuth from '../../hooks/useAuth';
 
 const AddContest = () => {
 
    const { register, handleSubmit, formState: {errors}} = useForm();
 
 
-//    const {user} = useAuth()
+   const {user} = useAuth()
 
    const axiosSecure = useAxiosSecure()
 
+
+
+
    const handleSendRequest = (data) => {
-    console.log(data)
-    axiosSecure.post('/contests', data)
+    const contestData = {
+         ...data,
+         email: user?.email
+    
+    }
+    axiosSecure.post('/contests', contestData)
     .then(res => {
         console.log('after saving add contests', res.data)
     })
