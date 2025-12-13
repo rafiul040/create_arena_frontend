@@ -3,16 +3,16 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const ContestDetails = () => {
-  const { id } = useParams();
+  const { contestId } = useParams();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
   const { data: contest = {}, isLoading } = useQuery({
-    queryKey: ["contestDetails", id],
+    queryKey: ["contestDetails", contestId],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/contests/${id}`);
+      const res = await axiosSecure.get(`/contests/${contestId}`);
       return res.data;
-    },
+    }
   });
 
   if (isLoading) {
@@ -20,30 +20,64 @@ const ContestDetails = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <img
-        src={contest.image}
-        alt={contest.name}
-        className="w-full h-80 object-cover rounded"
-      />
+    <div className="max-w-6xl mx-auto p-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        
+        
+        <div>
+          <img
+            src={contest.image}
+            alt={contest.name}
+            className="w-[250px] h-[220px] mx-auto rounded-lg border"
+          />
 
-      <h2 className="text-3xl font-bold mt-6">{contest.name}</h2>
+          
+          
+        </div>
 
-      <p className="mt-3 text-gray-600">{contest.description}</p>
+    
+        <div>
+          <span className="text-sm text-green-600 font-semibold uppercase">
+            New Contest
+          </span>
 
-      <div className="grid grid-cols-2 gap-4 mt-6">
-        <p><strong>Type:</strong> {contest.type}</p>
-        <p><strong>Entry Fee:</strong> ${contest.price}</p>
-        <p><strong>Prize Money:</strong> ${contest.prizeMoney}</p>
-        <p><strong>Deadline:</strong> {contest.deadline}</p>
+          <h2 className="text-3xl font-bold mt-2">
+            {contest.name}
+          </h2>
+
+    
+          <div className="flex items-center gap-2 mt-2">
+            <span className="text-yellow-500">★★★★★</span>
+            <span className="text-sm text-gray-500">(4.5)</span>
+          </div>
+
+
+          <p className="text-3xl font-semibold text-green-600 mt-4">
+            ${contest.price}
+          </p>
+
+          
+          <p className="text-gray-600 mt-4">
+            {contest.description}
+          </p>
+
+        
+          <div className="grid grid-cols-2 gap-4 mt-6 text-sm">
+            <p className="font-semibold"><strong>Type:</strong> {contest.type}</p>
+            <p className="font-semibold"><strong>Prize:</strong> ${contest.prizeMoney}</p>
+            <p className="font-semibold"><strong>Deadline:</strong> {contest.deadline}</p>
+            <p className="font-semibold"><strong>Status:</strong> Open</p>
+          </div>
+
+        
+          <button
+            onClick={() => navigate(`/payment/${contest._id}`)}
+            className="mt-8 w-full py-3 bg-amber-800 text-white rounded-lg font-semibold hover:bg-amber-900 transition"
+          >
+            Proceed to Payment
+          </button>
+        </div>
       </div>
-
-      <button
-        onClick={() => navigate(`/payment/${contest._id}`)}
-        className="mt-8 px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700"
-      >
-        Proceed to Payment
-      </button>
     </div>
   );
 };
