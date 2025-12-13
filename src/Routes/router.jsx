@@ -12,6 +12,8 @@ import PrivateRoute from "./PrivateRoute";
 import DashboardLayout from "../Layouts/DashboardLayout";
 import ManageUsers from "../Pages/Admin/ManageUsers";
 import ManageContests from "../Pages/Admin/ManageContests";
+import ContestDetails from "../Pages/AllContests/ContestDetails";
+import Payment from "../Pages/AllContests/Payment";
 
 
 
@@ -48,6 +50,14 @@ export const router = createBrowserRouter([
             {
                 path: 'all_contests',
                 Component: AllContests
+            },
+            {
+                path: 'contest/:id',
+                Component: ContestDetails
+            },
+            {
+                path: 'payment/:id',
+                Component: Payment
             },
             {
                 path: 'leaderboard',
