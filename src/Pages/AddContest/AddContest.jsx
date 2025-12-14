@@ -16,7 +16,6 @@ const AddContest = () => {
 
   const handleSendRequest = async (data) => {
     try {
-      // ================= 1️⃣ Image Upload =================
       const imageFile = data.image[0];
 
       const formData = new FormData();
@@ -26,7 +25,7 @@ const AddContest = () => {
 
       const imageURL = imgRes.data.data.url;
 
-      // ================= 2️⃣ Contest Data =================
+      
       const contestData = {
         name: data.name,
         type: data.type,
@@ -35,13 +34,13 @@ const AddContest = () => {
         prizeMoney: data.prizeMoney,
         taskInstruction: data.taskInstruction,
         deadline: data.deadline,
-        image: imageURL,          // ✅ IMAGE URL
+        image: imageURL,         
         email: user?.email,
         status: "pending",
         createdAt: new Date()
       };
 
-      // ================= 3️⃣ Save to Backend =================
+      
       const res = await axiosSecure.post('/contests', contestData);
 
       if (res.data.insertedId) {
@@ -60,6 +59,7 @@ const AddContest = () => {
 
   return (
     <div className="max-w-xl mx-auto mt-10 p-8">
+      <title>Add Contest | Create Arena</title>
       <h2 className="text-2xl font-semibold mb-9 -mt-8 text-center">
         Add Contest
       </h2>
@@ -92,7 +92,7 @@ const AddContest = () => {
           </div>
         </div>
 
-        {/* IMAGE */}
+      
         <div>
           <label className="text-xs font-semibold">IMAGE</label>
           <input

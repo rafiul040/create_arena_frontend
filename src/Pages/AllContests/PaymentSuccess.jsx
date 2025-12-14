@@ -36,6 +36,7 @@ const PaymentSuccess = () => {
 
   return (
     <div>
+        <title>Payment Success | Create Arena</title>
       <h2 className="text-4xl">Payment Successful</h2>
 
       {paymentInfo.transactionId && (

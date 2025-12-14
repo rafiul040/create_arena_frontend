@@ -5,13 +5,14 @@ import { Link } from 'react-router';
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from 'axios';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 
 
 const Register = () => {
       const [showPassword, setShowPassword] = useState(false);
       const navigate = useNavigate();
-
+      const axiosSecure = useAxiosSecure()
     const {registerUser, signInGoogle, updateUserProfile} = useAuth()
     const {
         register,
@@ -20,12 +21,18 @@ const Register = () => {
     } =  useForm()
       
 
+
+
+
+
+
     const handleRegistration = (data) => {
-        console.log('after register', data.photo[0])
         const profileImg = data.photo[0]
         registerUser(data.email, data.password)
-        .then(result => {
-          console.log(result.user)
+        .then(() => {
+
+
+
           const formData = new FormData();
           formData.append('image', profileImg);
 
@@ -33,12 +40,24 @@ const Register = () => {
 
           axios.post(imageAPIURL, formData)
           .then(res => {
-            console.log("After image Upload", res.data.data.url)
+            const photoURL = res.data.data.url
+
+            const userInfo = {
+              email: data.email,
+              displayName: data.name,
+              photoURL: photoURL,
+            }
+            axiosSecure.post('/users', userInfo)
+            .then(res => {
+              if(res.data.insertedId){
+                console.log('user created in the data base' )
+              }
+            })
 
 
             const userProfile = {
               displayName : data.name,
-              photoURL : res.data.data.url
+              photoURL : photoURL
             }
 
             updateUserProfile(userProfile)
@@ -65,11 +84,24 @@ const Register = () => {
     const handleGoogleSignIn = () => {
       signInGoogle()
       .then(result => {
-        toast.success("Logged in with Google! ");
+        toast.success("Register with Google! ");
       console.log(result.user)
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+
+        const userInfo = {
+          email: result.user.email,
+          displayName: result.user.displayName,
+          photoURL: result.user.photoURL
+        }
+        
+
+        
+        axiosSecure.post('/users', userInfo)
+        .then(res => {
+          console.log("user data has been stored", res.data)
+        })
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       })
       .catch(errors => {
         console.log(errors)

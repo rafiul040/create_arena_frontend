@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 const PaymentCancelled = () => {
     return (
         <div>
+            <title>Payment Cancelled | Create Arena</title>
             <h2>
             Payment is Cancelled. Please Try Again
             </h2>

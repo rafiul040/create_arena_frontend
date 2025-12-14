@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router';
 import Logo from '../../Components/Logo';
 import useAuth from '../../hooks/useAuth';
+import { AiOutlineLogin, AiOutlinePlus } from "react-icons/ai";
+import { FaHome } from 'react-icons/fa';
 
 const Navbar = () => {
 
@@ -20,7 +22,10 @@ const Navbar = () => {
 const menu = (
   <>
   <Link to="/">
-    <li className="nav-glow">Home</li></Link>
+     
+
+    <li className="nav-glow">
+      Home</li></Link>
   <Link to="/all_contests">
     <li className="nav-glow">All Contests</li>
   </Link>
@@ -72,7 +77,12 @@ const menu = (
 
     {
       user ? ( <>
-      <Link to="/" onClick={handleLogout} className="btn hover:rounded-4xl hover:font-bold hover:bg-amber-300">Log Out</Link>
+      <Link to="/" onClick={handleLogout} className="btn hover:rounded-4xl hover:font-bold hover:bg-amber-300">
+      <AiOutlineLogin />
+      Log Out</Link>
+      <Link to="/creator_access" className="btn hover:rounded-4xl hover:font-bold hover:bg-amber-300">
+      <AiOutlinePlus />
+      Creator Access</Link>
       </>
       )
       : ( <>

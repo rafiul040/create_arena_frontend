@@ -51,7 +51,7 @@ body{
 }
 
 .nav-glow:hover {
-  background: rgba(253, 199, 1, 0.15); /* soft yellow tint */
+  background: rgba(253, 199, 1, 0.15);
   box-shadow: 0 0 12px rgba(253, 199, 1, 0.4);
   transform: scale(1.05);
   cursor: pointer;
