@@ -11,7 +11,7 @@ const Payment = () => {
   const { isLoading, data: contest } = useQuery({
     queryKey: ['contest', contestId],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/contests/${contestId}`);
+      const res = await axiosSecure.get(`contests/${contestId}`);
       return res.data;
     }
   });

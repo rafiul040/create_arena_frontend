@@ -85,24 +85,33 @@ const DashboardLayout = () => {
           
 
           
- <li>
-            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Contest Management" to="/dashboard/contest_management">
+        <li>
+            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Created Contest" to="/dashboard/my_created_contest">
             <FaUsers/>
-            <span className='is-drawer-close:hidden'>Contest Management</span>
+            <span className='is-drawer-close:hidden'>My Created Contest</span>
             </NavLink>
         </li>
+
+          
+        <li>
+            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Submission Task" to="/dashboard/submission_task">
+            <FaUsers/>
+            <span className='is-drawer-close:hidden'>Submission Task</span>
+            </NavLink>
+        </li>
+        {/* <li>
+            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Submission Task" to="/dashboard/submission_task">
+            <FaUsers/>
+            <span className='is-drawer-close:hidden'>Submission Task</span>
+            </NavLink>
+        </li> */}
           
           
 
        
 
 
-        <li>
-            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Contests Participants" to="/dashboard/contests_participants">
-            <FaMedal/>
-            <span className='is-drawer-close:hidden'>Contest Participants</span>
-            </NavLink>
-        </li>
+       
 
 
         </>}
@@ -111,9 +120,21 @@ const DashboardLayout = () => {
         {
           role === "user" && <>
           <li>
-            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Joining Contest" to="/dashboard/joining_contests">
+            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Profile" to="/dashboard/my_profile">
             <FaMedal/>
-            <span className='is-drawer-close:hidden'>Joining Contest</span>
+            <span className='is-drawer-close:hidden'>My Profile</span>
+            </NavLink>
+        </li>
+          <li>
+            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My Participated Contest" to="/dashboard/my_participate_contest">
+            <FaMedal/>
+            <span className='is-drawer-close:hidden'>My Participated Contest</span>
+            </NavLink>
+        </li>
+          <li>
+            <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="My winning Contest" to="/dashboard/my_winning_contest">
+            <FaMedal/>
+            <span className='is-drawer-close:hidden'>My Winning Contest</span>
             </NavLink>
         </li>
           

@@ -22,7 +22,18 @@ import ApproveCreators from "../Pages/Dashboard/ApproveCreators";
 import AdminRoute from "./AdminRoute";
 import Profile from "../Pages/Profile/Profile";
 import Forbidden from "../Pages/Shared/Forbidden";
-// import ApproveCreators from './../Pages/Dashboard/ApproveCreators';
+import MyCreatedContest from "../Pages/Dashboard/CreatorsDashboard/MyCreatedContest";
+import SubmissionTask from "../Pages/Dashboard/CreatorsDashboard/SubmissionTask";
+import EditContest from "../Pages/Dashboard/CreatorsDashboard/EditContest";
+import ContestParticipants from "../Pages/Dashboard/CreatorsDashboard/ContestParticipants";
+import MyContestParticipate from "../Pages/Dashboard/User/MyContestParticipate";
+import MyWinningContes from "../Pages/Dashboard/User/MyWinningContes";
+import MyProfile from "../Pages/Dashboard/User/MyProfile";
+// import MyContestParticipate from "../Pages/Dashboard/User/MyContestParticipate";
+// import MyProfile from "../Pages/Dashboard/User/MyProfile";
+// import MyWinningContes from "../Pages/Dashboard/User/MyWinningContes";
+// import MyProfile from './../Pages/Dashboard/User/MyProfile';
+
 
 export const router = createBrowserRouter([
   {
@@ -133,6 +144,12 @@ export const router = createBrowserRouter([
         </AdminRoute>
       },
       {
+        path: "my_created_contest",
+        element: <PrivateRoute>
+          <MyCreatedContest></MyCreatedContest>
+        </PrivateRoute>
+      },
+      {
         path: "payment_history",
         Component: PaymentHistory
       },
@@ -142,6 +159,38 @@ export const router = createBrowserRouter([
           <ApproveCreators></ApproveCreators>
         </AdminRoute>
       },
+      {
+        path: "submission_task",
+         element: <PrivateRoute>
+          <SubmissionTask></SubmissionTask>
+        </PrivateRoute>
+      },
+      {
+        path: "my_profile",
+         element: <PrivateRoute>
+          <MyProfile></MyProfile>
+        </PrivateRoute>
+      },
+      {
+        path: "my_winning_contest",
+         element: <PrivateRoute>
+          <MyWinningContes></MyWinningContes>
+        </PrivateRoute>
+      },
+      {
+        path: "my_participate_contest",
+         element: <PrivateRoute>
+          <MyContestParticipate/>
+        </PrivateRoute>
+      },
+      // {
+      //   path: "edit_contest",
+      //    element: <PrivateRoute>
+      //     <EditContest></EditContest>
+      //   </PrivateRoute>
+      // },
     ]
   }
 ]);
+
+
