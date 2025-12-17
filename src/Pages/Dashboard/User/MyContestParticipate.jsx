@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 
@@ -11,98 +11,97 @@ const MyContestParticipate = () => {
   useEffect(() => {
     if (!user?.email) return;
 
-    setLoading(true);
-    axiosSecure
-      .get(`/my-participated-contests/${user.email}`)
-      .then(res => {
-        // ✅ Only paid contests
-        const paidContests = res.data.filter(
-          c => c.paymentStatus === "paid"
+    const fetchContests = async () => {
+      setLoading(true);
+      try {
+        // ✅ Use correct backend endpoint
+        const res = await axiosSecure.get(`/my-participated-contests/${user.email}`);
+        
+        // ✅ Filter by correct field: paymentStatus === "paid"
+        const paidContests = res.data.filter((payment) => payment.paymentStatus === "paid");
+        
+        // ✅ Sort by contest deadline (from contestDetails)
+        paidContests.sort((a, b) => 
+          new Date(a.contestDetails?.deadline) - new Date(b.contestDetails?.deadline)
         );
+        
+        setContests(paidContests);
+      } catch (err) {
+        console.error("Error fetching participated contests:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        // ✅ Sort by upcoming deadline
-        const sortedByDeadline = paidContests.sort(
-          (a, b) =>
-            new Date(a.contestDetails?.deadline) -
-            new Date(b.contestDetails?.deadline)
-        );
-
-        setContests(sortedByDeadline);
-      })
-      .catch(err => console.error("Error fetching contests:", err))
-      .finally(() => setLoading(false));
+    fetchContests();
   }, [user?.email, axiosSecure]);
 
   if (loading) {
     return (
-      <div className="flex justify-center py-10">
+      <div className="min-h-screen flex justify-center items-center">
         <span className="loading loading-infinity loading-lg"></span>
       </div>
     );
   }
 
-  if (!contests.length) {
-    return (
-      <p className="text-center py-10 text-gray-500">
-        No paid contests found. Join some contests! 🎯
-      </p>
-    );
-  }
-
   return (
-    <div className="space-y-4">
-      <h3 className="text-xl font-bold mb-4">
-        📋 My Participated Contests ({contests.length})
-      </h3>
+    <div className="min-h-screen px-6 py-10 max-w-6xl mx-auto">
+      <h2 className="text-3xl font-bold mb-8 text-indigo-600">My Participated Contests</h2>
 
-      {contests.map(c => (
-        <div
-          key={c._id}
-          className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl shadow-lg border-l-4 border-blue-500"
-        >
-          <div className="flex items-start gap-4">
-            <img
-              src={c.contestDetails?.image || "/default-contest.png"}
-              alt={c.contestDetails?.name}
-              className="w-20 h-20 rounded-xl object-cover"
-            />
-
-            <div className="flex-1">
-              <h4 className="font-bold text-lg text-gray-800">
-                {c.contestDetails?.name}
-              </h4>
-
-              <p className="text-sm text-gray-600 mt-1">
-                Entry Fee: ৳{c.amount}
-              </p>
-
-              <p className="text-sm text-gray-600">
-                📅 Deadline:{" "}
-                {new Date(
-                  c.contestDetails?.deadline
-                ).toLocaleDateString()}
-              </p>
-
-              {/* ✅ Payment Status */}
-              <span className="inline-block mt-2 px-3 py-1 text-xs rounded-full bg-green-100 text-green-700 font-semibold">
-                ✅ Paid
-              </span>
-
-              {c.trackingId && (
-                <p className="text-xs text-gray-500 mt-2">
-                  Tracking ID: {c.trackingId}
-                </p>
-              )}
-
-              {c.contestWinnerDeclared && (
-                <span className="inline-block mt-2 ml-2 px-2 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full">
-                  🏆 Winner Declared
-                </span>
-              )}
-            </div>
-          </div>
+      {contests.length === 0 ? (
+        <p className="text-center text-gray-600 mt-16">You have not participated in any contests yet.</p>
+      ) : (
+        <div className="overflow-x-auto rounded-2xl shadow-lg">
+          <table className="table w-full">
+            <thead>
+              <tr className="text-indigo-600">
+                <th>#</th>
+                <th>Contest</th>
+                <th>Price Paid</th>
+                <th>Deadline</th>
+                <th>Payment ID</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {contests.map((payment, index) => {
+                const contest = payment.contestDetails || {};
+                const isExpired = new Date(contest.deadline) < new Date();
+                
+                return (
+                  <tr key={payment._id} className="hover">
+                    <th>{index + 1}</th>
+                    <td className="font-medium">
+                      {contest.name || "Contest Deleted"}
+                    </td>
+                    <td>${payment.price}</td>
+                    <td>
+                      <span className={`${
+                        isExpired ? 'text-red-600' : 'text-green-600'
+                      } font-semibold`}>
+                        {new Date(contest.deadline).toLocaleDateString()}
+                        {isExpired && ' (Expired)'}
+                      </span>
+                    </td>
+                    <td className="font-mono text-sm text-gray-600">
+                      {payment.trackingId}
+                    </td>
+                    <td>
+                      {payment.isWinner ? (
+                        <span className="badge badge-success badge-lg">🏆 Winner!</span>
+                      ) : isExpired ? (
+                        <span className="badge badge-error">Expired</span>
+                      ) : (
+                        <span className="badge badge-info">Active</span>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
-      ))}
+      )}
     </div>
   );
 };

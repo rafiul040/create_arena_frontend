@@ -2,6 +2,14 @@ import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
+import { Doughnut } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const MyProfile = () => {
   const { user } = useAuth();
@@ -25,14 +33,10 @@ const MyProfile = () => {
     createdContests: 0,
   });
 
-  const [contests, setContests] = useState([]);
-  const [wins, setWins] = useState([]);
-
-  /* ================= FETCH ALL DATA ================= */
   useEffect(() => {
     if (!user?.email) return;
 
-    const fetchAllData = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
 
@@ -48,28 +52,18 @@ const MyProfile = () => {
 
         // Fetch stats
         const statsRes = await axiosSecure.get(`/users/${user.email}/stats`);
-        setStats(statsRes.data || stats);
+        setStats(statsRes.data || { participated: 0, won: 0, createdContests: 0 });
 
-        // Fetch participated contests
-        const contestsRes = await axiosSecure.get(`/my-participated-contests/${user.email}`);
-        setContests(contestsRes.data || []);
-
-        // Fetch winning contests
-        const winsRes = await axiosSecure.get(`/my-winning-contests/${user.email}`);
-        setWins(winsRes.data || []);
-
-      } catch (error) {
-        console.error("Error fetching dashboard data:", error);
-        Swal.fire("Error", "Failed to load dashboard", "error");
+      } catch (err) {
+        Swal.fire("Error", "Failed to load profile", "error");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAllData();
+    fetchData();
   }, [user?.email, axiosSecure]);
 
-  /* ================= HANDLERS ================= */
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
@@ -78,7 +72,6 @@ const MyProfile = () => {
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onloadend = () => {
       setUserData((prev) => ({ ...prev, photoURL: reader.result }));
@@ -86,7 +79,6 @@ const MyProfile = () => {
     reader.readAsDataURL(file);
   };
 
-  /* ================= UPDATE PROFILE ================= */
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
     setUpdating(true);
@@ -99,10 +91,10 @@ const MyProfile = () => {
         bio: userData.bio,
       });
 
-      Swal.fire("Success!", "Profile updated successfully", "success");
+      Swal.fire("Success", "Profile updated successfully", "success");
       setEditing(false);
     } catch {
-      Swal.fire("Error!", "Profile update failed", "error");
+      Swal.fire("Error", "Profile update failed", "error");
     } finally {
       setUpdating(false);
     }
@@ -117,273 +109,208 @@ const MyProfile = () => {
   }
 
   const winRate =
-    stats.participated > 0
-      ? ((stats.won / stats.participated) * 100).toFixed(0)
-      : 0;
+    stats.participated > 0 ? ((stats.won / stats.participated) * 100).toFixed(0) : 0;
+
+  const doughnutData = {
+    labels: ["Won", "Lost"],
+    datasets: [
+      {
+        data: [stats.won, Math.max(stats.participated - stats.won, 0)],
+        backgroundColor: ["#22c55e", "#e5e7eb"],
+        borderWidth: 0,
+        cutout: "70%",
+      },
+    ],
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-10 px-4">
-      <div className="max-w-6xl mx-auto">
-        
-        {/* ================= HEADER ================= */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent mb-4">
-            My Dashboard
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Track your contests, payments, achievements and profile
-          </p>
+      <div className="max-w-6xl mx-auto space-y-10">
+        <div className="text-center">
+          <h1 className="text-4xl font-black text-indigo-600">My Profile</h1>
+          <p className="text-gray-600 mt-2">Manage your profile & track performance</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          
-          {/* ================= STATS CARD ================= */}
-          <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/50">
-            <h3 className="text-3xl font-bold mb-8 flex items-center gap-3 text-gray-800">
-              📊
-              <span className="text-sm font-normal text-gray-600">Statistics</span>
-            </h3>
-            
-            <div className="space-y-4 mb-8">
-              <StatCard 
-                icon="🎯" 
-                label="Contests Joined" 
-                value={stats.participated}
-                color="blue"
-              />
-              <StatCard 
-                icon="🏆" 
-                label="Contests Won" 
-                value={stats.won}
-                color="yellow"
-              />
-              <StatCard 
-                icon="🎨" 
-                label="Contests Created" 
-                value={stats.createdContests}
-                color="purple"
-              />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+          <div className="bg-white rounded-3xl p-8 shadow-xl space-y-6">
+            <h3 className="text-2xl font-bold">📊 Statistics</h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Stat icon="🎯" label="Contests Joined" value={stats.participated} />
+              <Stat icon="🏆" label="Contests Won" value={stats.won} />
+              <Stat icon="🎨" label="Ongoing Contests" value={stats.createdContests} />
             </div>
 
-            <div className="p-6 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl text-white text-center shadow-2xl">
-              <p className="text-5xl font-black">{winRate}%</p>
-              <p className="text-lg font-semibold opacity-90 mt-1">Win Rate</p>
+          
+            <div className="bg-gray-50 rounded-3xl p-6">
+              <h4 className="text-center font-bold mb-4">🏆 Win Percentage</h4>
+              <div className="relative w-full h-64 flex items-center justify-center">
+                <Doughnut data={doughnutData} />
+                <div className="absolute text-center pointer-events-none">
+                  <p className="text-4xl font-black text-green-600">{winRate}%</p>
+                  <p className="text-sm text-gray-500 font-semibold">Win Rate</p>
+                </div>
+              </div>
+              <div className="flex justify-center gap-6 mt-4 text-sm">
+                <LegendItem color="bg-green-500" label={`Won (${stats.won})`} />
+                <LegendItem
+                  color="bg-gray-300"
+                  label={`Lost (${stats.participated - stats.won})`}
+                />
+              </div>
             </div>
           </div>
 
-          {/* ================= PROFILE CARD ================= */}
-          <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/50">
-            <div className="flex justify-between items-start mb-8">
-              <h3 className="text-3xl font-bold text-gray-800 flex items-center gap-3">
-                👤 Profile
-              </h3>
-              <div className="flex gap-2">
-                <input
-                  type="file"
-                  onChange={handlePhotoChange}
-                  className="file-input file-input-bordered file-input-xs"
-                  accept="image/*"
-                  disabled={!editing}
-                />
-                <button
-                  onClick={() => setEditing(!editing)}
-                  className="btn btn-outline btn-sm"
-                  disabled={updating}
-                >
-                  {editing ? "Cancel" : "Edit"}
-                </button>
-              </div>
+          {/* Profile Form */}
+          <div className="bg-white rounded-3xl p-8 shadow-xl">
+            <div className="flex justify-between mb-6">
+              <h3 className="text-2xl font-bold">👤 Profile</h3>
+              <button
+                className="btn btn-outline btn-sm"
+                onClick={() => setEditing(!editing)}
+                disabled={updating}
+              >
+                {editing ? "Cancel" : "Edit"}
+              </button>
             </div>
 
-            <form onSubmit={handleUpdateProfile} className="space-y-6">
-              <div className="flex justify-center mb-6">
-                <div className="relative">
-                  <img
-                    src={userData.photoURL || "/default-avatar.png"}
-                    className="w-36 h-36 rounded-3xl object-cover ring-8 ring-blue-200/50 shadow-2xl"
-                    alt="profile"
-                  />
-                  {editing && (
-                    <div className="absolute -bottom-2 -right-2 bg-green-500 p-2 rounded-2xl shadow-lg border-4 border-white">
-                      <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                      </svg>
-                    </div>
-                  )}
-                </div>
+            <form onSubmit={handleUpdateProfile} className="space-y-4">
+              <div className="flex justify-center">
+                <img
+                  src={
+                    userData.photoURL ||
+                    "https://img.freepik.com/free-icon/user_318-159711.jpg"
+                  }
+                  alt="User Profile"
+                  className="rounded-full w-28 h-28 object-cover border-4 border-indigo-200 shadow-lg"
+                />
               </div>
 
-              <Input 
-                label="Full Name" 
-                name="displayName" 
+              {editing && (
+                <div className="flex justify-center">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    className="file-input file-input-bordered w-full max-w-xs"
+                  />
+                </div>
+              )}
+
+              <InputField
+                label="Name"
+                name="displayName"
                 value={userData.displayName}
                 onChange={handleChange}
                 disabled={!editing}
               />
-              
-              <Input 
-                label="Email" 
-                value={userData.email} 
-                disabled 
+
+              <InputField
+                label="Email"
+                name="email"
+                value={userData.email}
+                disabled
               />
-              
-              <Input 
-                label="Phone" 
-                name="phone" 
+
+              <InputField
+                label="Phone"
+                name="phone"
+                type="tel"
                 value={userData.phone}
                 onChange={handleChange}
                 disabled={!editing}
               />
-              
-              <Textarea 
-                label="Bio" 
-                name="bio" 
+
+              <InputField
+                label="Bio"
+                name="bio"
+                type="textarea"
                 value={userData.bio}
                 onChange={handleChange}
                 disabled={!editing}
               />
 
               {editing && (
-                <button className="btn btn-primary w-full btn-lg shadow-xl" disabled={updating}>
+                <button
+                  type="submit"
+                  className="btn btn-primary w-full"
+                  disabled={updating}
+                >
                   {updating ? (
                     <>
-                      <span className="loading loading-spinner loading-sm"></span>
+                      <span className="loading loading-spinner"></span>
                       Updating...
                     </>
                   ) : (
-                    "💾 Save Changes"
+                    "Update Profile"
                   )}
                 </button>
               )}
             </form>
           </div>
         </div>
-
-        {/* ================= CONTESTS SECTION ================= */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-          {/* Participated Contests */}
-          <ContestSection 
-            title="📋 Participated Contests" 
-            count={contests.length}
-            items={contests}
-            emptyText="No contests joined yet. Join some contests! 🎯"
-          />
-
-          {/* Winning Contests */}
-          <ContestSection 
-            title="🏆 Winning Contests" 
-            count={wins.length}
-            items={wins}
-            emptyText="No wins yet 🥲 Keep participating to win big!"
-            isWin={true}
-          />
-        </div>
       </div>
     </div>
   );
 };
 
-/* ================= REUSABLE COMPONENTS ================= */
-const StatCard = ({ icon, label, value, color }) => {
-  const colors = {
-    blue: "from-blue-400 to-blue-600",
-    yellow: "from-yellow-400 to-orange-500",
-    purple: "from-purple-500 to-pink-600"
-  };
-
-  return (
-    <div className={`p-6 rounded-2xl shadow-lg border border-opacity-20 bg-gradient-to-r ${colors[color]} bg-opacity-10 backdrop-blur-sm hover:shadow-xl transition-all duration-300`}>
-      <div className="flex items-center gap-4">
-        <div className={`w-12 h-12 rounded-2xl ${colors[color]} bg-opacity-20 flex items-center justify-center shadow-lg`}>
-          <span className="text-2xl">{icon}</span>
-        </div>
-        <div>
-          <p className="text-sm text-gray-600 font-medium">{label}</p>
-          <p className="text-3xl font-black text-gray-900">{value}</p>
-        </div>
+// Clean helper components
+const Stat = ({ icon, label, value }) => (
+  <div className="bg-gradient-to-r from-indigo-50 to-blue-50 p-4 rounded-xl border-l-4 border-indigo-500">
+    <div className="flex items-center gap-3">
+      <div className="text-3xl">{icon}</div>
+      <div>
+        <p className="text-sm text-gray-600">{label}</p>
+        <p className="text-2xl font-bold text-indigo-700">{value}</p>
       </div>
     </div>
-  );
-};
-
-const ContestSection = ({ title, count, items, emptyText, isWin = false }) => (
-  <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/50">
-    <h3 className="text-2xl font-bold mb-6 flex items-center gap-3 text-gray-800">
-      {isWin ? "🏆" : "📋"} {title} 
-      <span className="text-lg font-normal text-gray-600">({count})</span>
-    </h3>
-    
-    {items.length === 0 ? (
-      <div className="text-center py-12">
-        <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-3xl flex items-center justify-center">
-          {isWin ? "🥲" : "🎯"}
-        </div>
-        <p className="text-gray-500 text-lg">{emptyText}</p>
-      </div>
-    ) : (
-      <div className="space-y-4 max-h-96 overflow-y-auto">
-        {items.map((item) => (
-          <ContestCard key={item._id} contest={item} isWin={isWin} />
-        ))}
-      </div>
-    )}
   </div>
 );
 
-const ContestCard = ({ contest, isWin }) => (
-  <div className={`p-6 rounded-2xl shadow-lg border-l-4 transition-all hover:shadow-xl ${
-    isWin 
-      ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border-yellow-500' 
-      : 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-500'
-  }`}>
-    <div className="flex items-start gap-4">
-      <img 
-        src={contest.contestDetails?.image || contest.contestImage || '/default-contest.png'} 
-        alt={contest.contestName}
-        className="w-20 h-20 rounded-2xl object-cover flex-shrink-0 shadow-md"
+const LegendItem = ({ color, label }) => (
+  <div className="flex items-center gap-2">
+    <span className={`w-6 h-6 rounded-full ${color}`}></span>
+    <span>{label}</span>
+  </div>
+);
+
+const InputField = ({ label, name, value, onChange, disabled, type = "text" }) => (
+  <div>
+    <label htmlFor={name} className="block font-semibold mb-2 text-gray-700">
+      {label}
+    </label>
+    {type === "textarea" ? (
+      <textarea
+        id={name}
+        name={name}
+        rows="4"
+        className={`w-full p-3 rounded-xl border-2 transition-all duration-200 ${
+          disabled
+            ? "border-gray-200 bg-gray-50 cursor-not-allowed"
+            : "border-indigo-200 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
+        }`}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+        placeholder={`Enter your ${label.toLowerCase()}...`}
       />
-      <div className="flex-1 min-w-0">
-        <h4 className="font-bold text-xl text-gray-800 mb-2 line-clamp-2">
-          {contest.contestDetails?.name || contest.contestName}
-        </h4>
-        <div className="space-y-1 text-sm">
-          <p className="text-gray-600">
-            💰 Entry: ${contest.price || contest.amount}
-          </p>
-          <p className="text-green-600 font-semibold">
-            ✅ {new Date(contest.createdAt).toLocaleDateString()}
-          </p>
-          {contest.trackingId && (
-            <p className="text-xs text-gray-500">
-              🆔 {contest.trackingId}
-            </p>
-          )}
-          {contest.contestWinnerDeclared && (
-            <span className="inline-block px-3 py-1 text-xs bg-yellow-100 text-yellow-800 rounded-full font-semibold">
-              👑 Winner Declared
-            </span>
-          )}
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-const Input = ({ label, ...props }) => (
-  <div className="form-control w-full">
-    <label className="label">
-      <span className="label-text font-semibold">{label}</span>
-    </label>
-    <input className="input input-bordered input-lg w-full" {...props} />
-  </div>
-);
-
-const Textarea = ({ label, ...props }) => (
-  <div className="form-control w-full">
-    <label className="label">
-      <span className="label-text font-semibold">{label}</span>
-    </label>
-    <textarea className="textarea textarea-bordered textarea-lg w-full" rows={3} {...props} />
+    ) : (
+      <input
+        id={name}
+        name={name}
+        type={type}
+        className={`w-full p-3 rounded-xl border-2 transition-all duration-200 ${
+          disabled
+            ? "border-gray-200 bg-gray-50 cursor-not-allowed"
+            : "border-indigo-200 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200"
+        }`}
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+        placeholder={`Enter your ${label.toLowerCase()}...`}
+      />
+    )}
   </div>
 );
 

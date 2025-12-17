@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-// import useAxiosSecure from "../../../hooks/useAxiosSecure";
-// import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 
@@ -20,8 +18,10 @@ const MyPaymentHistory = () => {
       {payments.map(p => (
         <div key={p._id} className="border p-3 mb-3 rounded">
           <h3>{p.contestName}</h3>
-          <p>Amount: ৳{p.amount}</p>
+          <p>Amount: ৳{p.price}</p>
           <p>Txn: {p.transactionId}</p>
+          <p>Txn: {p.trackingId}</p>
+          <p>Txn: {p.contestId}</p>
         </div>
       ))}
     </div>
