@@ -1,14 +1,16 @@
-import React from 'react';
-import Banner from '../Banner/Banner';
-import ContestSection from '../Banner/ContestSection';
+import React, { useState } from "react";
+import Banner from "../Banner/Banner";
+import ContestSection from "../Banner/ContestSection";
 
 const Home = () => {
-    return (
-        <div>
-            <Banner></Banner>
-            <ContestSection></ContestSection>
-        </div>
-    );
+  const [searchText, setSearchText] = useState("");
+
+  return (
+    <>
+      <Banner searchText={searchText} setSearchText={setSearchText} />
+      <ContestSection searchText={searchText} />
+    </>
+  );
 };
 
 export default Home;
