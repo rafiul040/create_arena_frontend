@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
@@ -11,7 +10,7 @@ const Payment = () => {
   const { user } = useAuth();
 
 
-  // Fetch contest details using react-query
+  
   const { isLoading, data: contest } = useQuery({
     queryKey: ['contest', contestId],
     queryFn: async () => {
@@ -29,8 +28,8 @@ const handlePayment = async () => {
   }
 
   const paymentInfo = {
-    price: contest.price,        // Keep as 'price'
-    contestId: contest._id,      // Add contestId
+    price: contest.price,      
+    contestId: contest._id,      
     email: user.email,
     name: contest.name
   };
@@ -45,7 +44,7 @@ const handlePayment = async () => {
 
 
 
-  // Loading state
+  
   if (isLoading) return (
     <div className="flex justify-center mt-20">
       <span className='loading loading-infinity loading-xl'></span>
@@ -53,7 +52,7 @@ const handlePayment = async () => {
   );
 
 
-  // Contest not found state
+  
   if (!contest) return <p className="text-center mt-20 text-red-500">Contest Not Found</p>;
 
 
@@ -80,3 +79,6 @@ const handlePayment = async () => {
 
 
 export default Payment;
+
+
+

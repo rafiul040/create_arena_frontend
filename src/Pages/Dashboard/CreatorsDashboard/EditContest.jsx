@@ -19,7 +19,7 @@ const EditContest = () => {
     image: ""
   });
 
-  // ================= FETCH CONTEST =================
+  
   const { data: contest, isLoading } = useQuery({
     queryKey: ["contest", id],
     queryFn: async () => {
@@ -38,14 +38,14 @@ const EditContest = () => {
     }
   });
 
-  // ================= UPDATE MUTATION =================
+  
   const updateMutation = useMutation({
     mutationFn: async (updatedData) =>
       axiosSecure.patch(`/contests/${id}`, updatedData),
     onSuccess: () => {
       Swal.fire("Updated!", "Contest updated successfully", "success");
       queryClient.invalidateQueries(["myCreatedContests"]);
-      navigate("/my-created-contests"); // back to contest list
+      navigate("/my-created-contests"); 
     },
     onError: (err) => {
       Swal.fire("Error!", err.response?.data?.message || "Update failed", "error");

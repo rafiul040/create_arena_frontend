@@ -126,6 +126,10 @@ const Footer = () => {
           </div>
 
         </div>
+        <p className="text-center mt-10">
+        Copyright © 2025 Create Arena
+        </p>
+
 
       </footer>
     </div>

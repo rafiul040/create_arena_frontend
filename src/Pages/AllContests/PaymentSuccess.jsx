@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import { toast } from "react-hot-toast"; // or use alert
+import { toast } from "react-hot-toast"; 
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -18,7 +18,7 @@ const PaymentSuccess = () => {
         try {
           const res = await axiosSecure.get(`/payment-success?session_id=${sessionId}`);
           
-          // ✅ Invalidate ALL relevant queries
+          
           queryClient.invalidateQueries({ queryKey: ["popularContests"] });
           queryClient.invalidateQueries({ queryKey: ["contest"] });
           queryClient.invalidateQueries({ queryKey: ["participants"] });
@@ -26,10 +26,11 @@ const PaymentSuccess = () => {
 
           toast.success(res.data.message);
           
-          // Redirect to contest details or dashboard
+        
           const contestId = res.data.contestId;
           setTimeout(() => {
-            navigate(`/contests/${contestId}`);
+            // navigate(`/contests/${contestId}`);
+            navigate(`/all_contests`);
           }, 2000);
         } catch (error) {
           toast.error("Payment verification failed");

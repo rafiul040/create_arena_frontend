@@ -91,7 +91,7 @@ const AddContest = () => {
 
         <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-teal-100">
           <form onSubmit={handleSubmit(handleSendRequest)} className="space-y-8">
-            {/* Contest Name & Type */}
+          
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-2">

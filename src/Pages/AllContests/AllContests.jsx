@@ -10,6 +10,15 @@ const CountdownTimer = ({ deadline }) => {
 
   function calculateTimeLeft(deadline) {
     const difference = new Date(deadline) - new Date();
+
+
+    const handleDetails = (id) => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+    navigate(`/contests/${id}`);
+  };
     
     if (difference <= 0) {
       return { expired: true };
@@ -42,6 +51,8 @@ const CountdownTimer = ({ deadline }) => {
       </div>
     );
   }
+
+   
 
   return (
     <div className="bg-gradient-to-r from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-xl p-4">
@@ -183,7 +194,7 @@ const ContestCard = ({ contest, alreadyPaid, navigate }) => {
               </button>
             </div>
           ) : alreadyPaid ? (
-            // Already Paid
+        
             <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-300 rounded-2xl text-center">
               <div className="flex items-center justify-center gap-3 mb-3">
                 <span className="text-3xl">✅</span>
@@ -193,10 +204,13 @@ const ContestCard = ({ contest, alreadyPaid, navigate }) => {
                 </div>
               </div>
               <button
-                onClick={() => navigate("/dashboard/my_participate_contest")}
+                // onClick={() => navigate("/dashboard/my_participate_contest")}
+                onClick={() => navigate(`/contests/${contest._id}`)}
+                
+                // onClick={() => handleDetails(contest._id)}
                 className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold transition-all duration-300"
               >
-                👉 View My Contests
+                 View Contests
               </button>
             </div>
           ) : (
@@ -214,15 +228,14 @@ const ContestCard = ({ contest, alreadyPaid, navigate }) => {
   );
 };
 
-// ✅ Main Component
 const AllContests = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [filter, setFilter] = useState("all"); // all, active, ended
+  const [filter, setFilter] = useState("all"); 
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Fetch approved contests
+  
   const { data: contests = [], isLoading: contestsLoading } = useQuery({
     queryKey: ["approvedContests"],
     queryFn: async () => {
@@ -231,7 +244,7 @@ const AllContests = () => {
     }
   });
 
-  // Fetch user's participated contests (PAID only)
+  
   const { data: participated = [], isLoading: participatedLoading } = useQuery({
     queryKey: ["userParticipated", user?.email],
     queryFn: async () => {
@@ -242,7 +255,7 @@ const AllContests = () => {
     enabled: !!user?.email,
   });
 
-  // Filter and search contests
+  
   const filteredContests = contests.filter(contest => {
     const matchesSearch = contest.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           contest.type.toLowerCase().includes(searchTerm.toLowerCase());
@@ -254,7 +267,7 @@ const AllContests = () => {
     return matchesSearch;
   });
 
-  // Check if user already paid
+
   const isAlreadyPaid = (contestId) => {
     return participated.some(payment => payment.contestId === contestId);
   };
@@ -272,7 +285,7 @@ const AllContests = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-indigo-50 to-purple-50">
       <title>All Contest | Create Arena</title>
       
-      {/* Header Section */}
+    
       <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 text-white py-12 px-6">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -282,9 +295,9 @@ const AllContests = () => {
             Compete, showcase your skills, and win amazing prizes!
           </p>
 
-          {/* Search and Filter */}
+        
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center max-w-2xl mx-auto">
-            {/* Search Input */}
+    
             <div className="relative flex-1 w-full">
               <input
                 type="text"
@@ -298,7 +311,7 @@ const AllContests = () => {
               </span>
             </div>
 
-            {/* Filter Buttons */}
+        
             <div className="flex gap-2">
               {[
                 { value: "all", label: "All", icon: "📋" },
@@ -322,7 +335,7 @@ const AllContests = () => {
         </div>
       </div>
 
-      {/* Stats Section */}
+      
       <div className="max-w-7xl mx-auto px-6 -mt-6">
         <div className="grid grid-cols-3 gap-4">
           <div className="bg-white rounded-xl shadow-lg p-4 text-center">
@@ -342,7 +355,7 @@ const AllContests = () => {
         </div>
       </div>
 
-      {/* Contests Grid */}
+      
       <div className="max-w-7xl mx-auto px-6 py-12">
         {filteredContests.length === 0 ? (
           <div className="text-center py-20">

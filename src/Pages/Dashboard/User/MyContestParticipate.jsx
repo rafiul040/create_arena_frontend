@@ -3,6 +3,9 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 
 const MyContestParticipate = () => {
+  const [selectedContest, setSelectedContest] = useState(null);
+const [taskText, setTaskText] = useState("");
+
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [contests, setContests] = useState([]);
@@ -14,13 +17,13 @@ const MyContestParticipate = () => {
     const fetchContests = async () => {
       setLoading(true);
       try {
-        // ✅ Use correct backend endpoint
+    
         const res = await axiosSecure.get(`/my-participated-contests/${user.email}`);
         
-        // ✅ Filter by correct field: paymentStatus === "paid"
+        
         const paidContests = res.data.filter((payment) => payment.paymentStatus === "paid");
         
-        // ✅ Sort by contest deadline (from contestDetails)
+        
         paidContests.sort((a, b) => 
           new Date(a.contestDetails?.deadline) - new Date(b.contestDetails?.deadline)
         );
@@ -61,6 +64,8 @@ const MyContestParticipate = () => {
                 <th>Deadline</th>
                 <th>Payment ID</th>
                 <th>Status</th>
+                
+
               </tr>
             </thead>
             <tbody>
@@ -95,6 +100,7 @@ const MyContestParticipate = () => {
                         <span className="badge badge-info">Active</span>
                       )}
                     </td>
+                    
                   </tr>
                 );
               })}
@@ -102,6 +108,56 @@ const MyContestParticipate = () => {
           </table>
         </div>
       )}
+      <dialog id="taskModal" className="modal">
+  <div className="modal-box">
+    <h3 className="font-bold text-xl mb-3">
+      Contest Task
+    </h3>
+
+    <p className="mb-4 text-gray-700">
+      {selectedContest?.contestDetails?.taskDescription ||
+        "No task assigned yet"}
+    </p>
+
+    <textarea
+      className="textarea textarea-bordered w-full"
+      placeholder="Write your task submission here..."
+      value={taskText}
+      onChange={(e) => setTaskText(e.target.value)}
+    />
+
+    <div className="modal-action">
+      <button
+        className="btn btn-success"
+        onClick={async () => {
+          await axiosSecure.post("/submit-task", {
+            contestId: selectedContest.contestId,
+            contestName: selectedContest.contestDetails.name,
+            taskText,
+            participantEmail: user.email,
+            participantName: user.displayName,
+          });
+
+          Swal.fire("Submitted!", "Task submitted successfully", "success");
+          setTaskText("");
+          document.getElementById("taskModal").close();
+        }}
+      >
+        Submit Task
+      </button>
+
+      <button
+        className="btn"
+        onClick={() =>
+          document.getElementById("taskModal").close()
+        }
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</dialog>
+
     </div>
   );
 };

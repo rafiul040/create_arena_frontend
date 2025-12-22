@@ -210,7 +210,7 @@ const ManageUsers = () => {
 
 
 <td className="text-center space-x-2">
-  {/* VIEW BUTTON */}
+
   <button
     onClick={() => {
       setSelectedUser(user);

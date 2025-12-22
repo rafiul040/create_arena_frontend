@@ -70,7 +70,7 @@ const ManageContests = () => {
     <div className="min-h-screen bg-base-200 p-6">
       <title>Manage Contest | Create Arena</title>
 
-      {/* ================= STATS ================= */}
+    
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="card bg-base-100 shadow">
           <div className="card-body">
@@ -119,7 +119,7 @@ const ManageContests = () => {
         </div>
       </div>
 
-      {/* ================= TABLE ================= */}
+      
       <div className="card bg-base-100 shadow">
         <div className="card-body">
           <h2 className="text-lg font-semibold mb-1">Country Campaigns</h2>

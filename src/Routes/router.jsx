@@ -30,7 +30,7 @@ import MyContestParticipate from "../Pages/Dashboard/User/MyContestParticipate";
 import MyWinningContes from "../Pages/Dashboard/User/MyWinningContes";
 import MyProfile from "../Pages/Dashboard/User/MyProfile";
 import MyPaymentHistory from "../Pages/Dashboard/MyPaymentHistory";
-// Removed unused Payments import
+
 
 export const router = createBrowserRouter([
   {
@@ -67,9 +67,9 @@ export const router = createBrowserRouter([
       {
         path: "payment/:contestId",
         element: (
-          <PrivateRoute>
+        
             <Payment />
-          </PrivateRoute>
+          
         ),
       },
       {

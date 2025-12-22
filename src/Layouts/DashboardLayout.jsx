@@ -120,7 +120,7 @@ const DashboardLayout = () => {
                       title="Submission Task"
                     >
                       <FaUsers className="inline mr-2" />
-                      Submission Task
+                      Submitted Task
                     </NavLink>
                   </li>
                 </>
