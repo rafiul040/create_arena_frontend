@@ -18,7 +18,7 @@ const ContestDetails = () => {
   if (!contestId) {
     return (
       <div className="min-h-screen flex flex-col justify-center items-center p-8 text-center bg-gradient-to-br from-slate-50 to-blue-50">
-        <div className="text-6xl mb-4">❌</div>
+        <div className="text-6xl mb-4 text-red font-bold">X</div>
         <h1 className="text-3xl font-bold text-gray-800 mb-4">Contest Not Found</h1>
         <button onClick={() => navigate('/contests')} className="btn btn-primary px-8 py-3">
           ← Back to Contests

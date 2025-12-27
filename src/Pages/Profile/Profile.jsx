@@ -6,9 +6,9 @@ const Profile = () => {
 
   return (
     <div className="max-w-5xl mx-auto bg-white rounded-xl shadow-md p-8">
-      {/* Header */}
+  
       <div className="flex items-center gap-8">
-        {/* Avatar */}
+        
         <div className="relative">
           <img
             src={user?.photoURL || "/avatar.png"}
@@ -18,7 +18,7 @@ const Profile = () => {
           <span className="absolute top-2 right-2 w-4 h-4 bg-green-500 rounded-full border-2 border-white" />
         </div>
 
-        {/* Basic Info */}
+  
         <div>
           <h2 className="text-2xl font-bold">{user?.displayName || "John Doe"}</h2>
           <p className="text-gray-500">{user?.email}</p>
@@ -31,21 +31,8 @@ const Profile = () => {
           </button>
         </div>
       </div>
+              </div>
 
-      {/* Divider */}
-      
-
-      {/* Details Grid */}
-      
-       
-        </div>
-
-       
-
-
-        
-    
-   
   );
 };
 

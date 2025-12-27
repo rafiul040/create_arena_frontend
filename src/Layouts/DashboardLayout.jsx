@@ -112,13 +112,10 @@ const DashboardLayout = () => {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink
-                      to="/dashboard/my_created_contest"
+        <NavLink to="/dashboard/my_created_contest"
                       className={({ isActive }) =>
-                        isActive ? 'active' : ''
-                    }
-                      title="My Created Contest"
-                    >
+                        isActive ? 'active' : ''}
+                      title="My Created Contest">
                       <FaUsers className="inline mr-2" />
                       My Created Contest
                     </NavLink>
