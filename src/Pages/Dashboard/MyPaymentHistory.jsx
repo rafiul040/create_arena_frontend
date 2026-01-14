@@ -17,7 +17,7 @@ const MyPaymentHistory = () => {
     <div>
       {payments.map(p => (
         <div key={p._id} className="border p-3 mb-3 rounded">
-          <h3>{p.contestName}</h3>
+          <h3>Contest Name: {p.contestName}</h3>
           <p>Amount: ৳{p.price}</p>
           <p>Txn: {p.transactionId}</p>
           <p>Txn: {p.trackingId}</p>

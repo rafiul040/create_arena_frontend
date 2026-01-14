@@ -41,7 +41,7 @@ const Payments = () => {
           {payments.map(payment => (
             <div key={payment._id} className="p-6 bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl border-l-4 border-green-500 shadow-sm">
               <div className="flex justify-between items-start mb-2">
-                <h3 className="font-bold text-xl">{payment.contestName}</h3>
+                <h3 className="font-bold text-xl">Contest Name {payment.contestName}</h3>
                 <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full font-semibold">
                   ${payment.price || payment.amount}
                 </span>

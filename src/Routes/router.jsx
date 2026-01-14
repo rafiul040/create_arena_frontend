@@ -61,15 +61,16 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <ContestDetails />
+
           </PrivateRoute>
         ),
       },
       {
         path: "payment/:contestId",
         element: (
-        
-            <Payment />
-          
+
+          <Payment />
+
         ),
       },
       {
@@ -104,6 +105,7 @@ export const router = createBrowserRouter([
     element: (
       <PrivateRoute>
         <DashboardLayout />
+        {/* <DashboardHome></DashboardHome> */}
       </PrivateRoute>
     ),
     errorElement: <Forbidden />,
@@ -201,7 +203,7 @@ export const router = createBrowserRouter([
         path: "payment-success",
         element: (
           // <PrivateRoute>
-            <PaymentSuccess />
+          <PaymentSuccess />
           // {/* </PrivateRoute> */}
         ),
       },

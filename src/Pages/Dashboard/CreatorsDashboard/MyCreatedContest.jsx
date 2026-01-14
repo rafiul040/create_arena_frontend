@@ -48,14 +48,7 @@ const MyCreatedContest = () => {
 });
 
 
-  // const { data: contestSubmissions = [] } = useQuery({
-  //   queryKey: ["contestSubmissions", selectedContest?._id],
-  //   enabled: !!selectedContest?._id && isSubmissionsOpen,
-  //   queryFn: async () => {
-  //     const res = await axiosSecure.get(`/creator-submissions?email=${user.email}&contestId=${selectedContest._id}`);
-  //     return res.data;
-  //   }
-  // });
+
 
 const { data: contestSubmissions = [] } = useQuery({
   queryKey: ["contestSubmissions", selectedContest?._id],
@@ -162,11 +155,11 @@ const { data: contestSubmissions = [] } = useQuery({
   }
 
   return (
-    <div className="min-h-screen bg-base-200 p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-center mb-10">My Created Contests</h1>
         
-        <div className="overflow-x-auto bg-white rounded-xl shadow-xl">
+        <div className="overflow-x-auto rounded-xl shadow-xl">
           <table className="table w-full">
             <thead className="bg-indigo-600 text-white">
               <tr>
@@ -198,7 +191,7 @@ const { data: contestSubmissions = [] } = useQuery({
                     ${contest.prizeMoney}
                   </td>
                   <td>
-                    <span className={`badge ${
+                    <span className={`badge p-2 rounded-2xl ${
                       contest.status === "pending" 
                         ? "badge-warning" 
                         : contest.status === "approved" 
@@ -209,13 +202,13 @@ const { data: contestSubmissions = [] } = useQuery({
                     </span>
                   </td>
                   <td>
-                    <span className="badge badge-info">
+                    <span className="badge badge-info p-2 rounded-2xl">
                       {contest.participantsCount || 0} Participants
                     </span>
                   </td>
-                  <td className="flex gap-2 flex-wrap">
+                  <td className="flex mt-3 gap-2 flex-wrap">
                     <button 
-                      className="btn btn-sm btn-info" 
+                      className="btn btn-sm btn-info border-none rounded-3xl" 
                       onClick={() => {
                         setSelectedContest(contest);
                         setIsDetailsOpen(true);
@@ -225,7 +218,7 @@ const { data: contestSubmissions = [] } = useQuery({
                     </button>
                     
                     <button 
-                      className="btn btn-sm btn-primary" 
+                      className="btn btn-sm btn-primary border-none rounded-full" 
                       onClick={() => {
                         setSelectedContest(contest);
                         setIsSubmissionsOpen(true);

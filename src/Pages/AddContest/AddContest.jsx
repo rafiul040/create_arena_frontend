@@ -78,23 +78,23 @@ const AddContest = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-teal-50 py-12 px-4">
+    <div className="min-h-screen py-12 px-4">
       <div className="max-w-2xl mx-auto">
         <title>Add Contest | Create Arena</title>
         
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-black bg-gradient-to-r from-teal-600 to-emerald-600 bg-clip-text text-transparent mb-4">
+          <h1 className="text-4xl font-black text-transparent mb-4 bg-gradient-to-r from-teal-600 to-emerald-600 bg-clip-text">
             Create New Contest
           </h1>
-          <p className="text-xl text-gray-600">Fill all details to create your contest</p>
+          <p className="text-xl">Fill all details to create your contest</p>
         </div>
 
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-teal-100">
+        <div className=" backdrop-blur-sm rounded-3xl p-10 shadow-2xl border border-teal-100">
           <form onSubmit={handleSubmit(handleSendRequest)} className="space-y-8">
           
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
+                <label className="block text-sm font-bold mb-2">
                   🎯 Contest Name
                 </label>
                 <input
@@ -111,7 +111,7 @@ const AddContest = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
+                <label className="block text-sm font-bold  mb-2">
                   🏷️ Contest Type
                 </label>
                 <select
@@ -134,7 +134,7 @@ const AddContest = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">
+              <label className="block text-sm font-bold  mb-2">
                 🖼️ Contest Banner Image
               </label>
               <input
@@ -152,7 +152,7 @@ const AddContest = () => {
 
             
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">
+              <label className="block text-sm font-bold  mb-2">
                 📝 Contest Description
               </label>
               <textarea
@@ -174,7 +174,7 @@ const AddContest = () => {
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
+                <label className="block text-sm font-bold  mb-2">
                   💰 Entry Fee ($)
                 </label>
                 <input
@@ -195,7 +195,7 @@ const AddContest = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">
+                <label className="block text-sm font-bold  mb-2">
                   🏆 Prize Money ($)
                 </label>
                 <input
@@ -218,7 +218,7 @@ const AddContest = () => {
 
             
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">
+              <label className="block text-sm font-bold  mb-2">
                  Task Instructions
               </label>
               <textarea
@@ -240,7 +240,7 @@ const AddContest = () => {
 
           
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">
+              <label className="block text-sm font-bold  mb-2">
                  Contest Deadline
               </label>
               <input
