@@ -124,16 +124,16 @@ const MyProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-10 px-4">
+    <div className="min-h-screen py-10 px-4">
       <div className="max-w-6xl mx-auto space-y-10">
         <div className="text-center">
           <h1 className="text-4xl font-black text-indigo-600">My Profile</h1>
-          <p className="text-gray-600 mt-2">Manage your profile & track performance</p>
+          <p className=" mt-2">Manage your profile & track performance</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
-          <div className="bg-white rounded-3xl p-8 shadow-xl space-y-6">
+          <div className=" rounded-3xl p-8 shadow-xl space-y-6">
             <h3 className="text-2xl font-bold">📊 Statistics</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -143,7 +143,7 @@ const MyProfile = () => {
             </div>
 
           
-            <div className="bg-gray-50 rounded-3xl p-6">
+            <div className=" rounded-3xl p-6">
               <h4 className="text-center font-bold mb-4">🏆 Win Percentage</h4>
               <div className="relative w-full h-64 flex items-center justify-center">
                 <Doughnut data={doughnutData} />
@@ -163,7 +163,7 @@ const MyProfile = () => {
           </div>
 
           {/* Profile Form */}
-          <div className="bg-white rounded-3xl p-8 shadow-xl">
+          <div className=" rounded-3xl p-8 shadow-xl">
             <div className="flex justify-between mb-6">
               <h3 className="text-2xl font-bold">👤 Profile</h3>
               <button

@@ -101,14 +101,14 @@ const ContestDetails = () => {
     return (
       <div className="min-h-screen flex flex-col justify-center items-center p-8 text-center">
         <div className="text-6xl mb-4">🔍</div>
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">Contest Not Found</h1>
+        <h1 className="text-3xl font-bold mb-4">Contest Not Found</h1>
         <button onClick={() => navigate('/contests')} className="btn btn-primary">← Back</button>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-12 px-4">
+    <div className="min-h-screen py-12 px-4">
       {paymentStatus === 'success' && (
         <div className="max-w-4xl mx-auto mb-8">
           <div className="bg-green-100 border-2 border-green-400 text-green-800 p-6 rounded-3xl shadow-xl">
@@ -132,7 +132,7 @@ const ContestDetails = () => {
           <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-6">
             {contest.name}
           </h1>
-          <div className="inline-flex items-center gap-2 bg-white/80 px-6 py-3 rounded-2xl shadow-xl">
+          <div className="inline-flex items-center gap-2 20/80 px-6 py-3 rounded-2xl shadow-xl">
             <span className="text-2xl">👥</span>
             <span className="text-xl font-bold">{participants.length} Participants</span>
           </div>
@@ -140,20 +140,20 @@ const ContestDetails = () => {
 
         <div className="grid lg:grid-cols-2 gap-12">
           <div className="space-y-8">
-            <div className="bg-white rounded-3xl p-8 shadow-xl">
+            <div className=" rounded-3xl p-8 shadow-xl">
               <h2 className="text-2xl font-bold mb-6">📝 Contest Details</h2>
-              <p className="text-gray-700 whitespace-pre-wrap">{contest.description}</p>
+              <p className=" whitespace-pre-wrap">{contest.description}</p>
             </div>
 
-            <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-3xl p-8 shadow-xl">
+            <div className=" rounded-3xl p-8 shadow-xl">
               <h3 className="text-2xl font-bold mb-6 text-emerald-800">🎯 Task</h3>
               <p className="whitespace-pre-wrap">{contest.taskDetails}</p>
             </div>
           </div>
 
           <div className="space-y-6">
-            <div className="bg-white rounded-3xl p-8 shadow-xl border-2 border-gray-100">
-              <h3 className="text-2xl font-bold mb-8 text-gray-800 text-center">Quick Actions</h3>
+            <div className=" rounded-3xl p-8 shadow-xl border-2 border-gray-100">
+              <h3 className="text-2xl font-bold mb-8 text-center">Quick Actions</h3>
 
             
               <button

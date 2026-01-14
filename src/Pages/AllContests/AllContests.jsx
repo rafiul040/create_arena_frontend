@@ -55,7 +55,7 @@ const CountdownTimer = ({ deadline }) => {
    
 
   return (
-    <div className="bg-gradient-to-r from-purple-100 to-indigo-100 border-2 border-purple-300 rounded-xl p-4">
+    <div className="border-2 border-purple-300 rounded-xl p-4">
       <div className="text-center mb-2">
         <span className="text-sm font-semibold text-purple-700 flex items-center justify-center gap-1">
           <span className="animate-pulse">🔴</span> LIVE COUNTDOWN
@@ -103,7 +103,7 @@ const ContestCard = ({ contest, alreadyPaid, navigate }) => {
   const isExpired = new Date(contest.deadline) < new Date();
 
   return (
-    <div className="bg-white shadow-xl rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 group flex flex-col">
+    <div className=" shadow-xl rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 group flex flex-col">
       {/* Image Section */}
       <div className="relative">
         <img
@@ -141,19 +141,19 @@ const ContestCard = ({ contest, alreadyPaid, navigate }) => {
 
         {/* Contest Details */}
         <div className="space-y-3 mb-4">
-          <div className="flex items-center gap-2 text-sm text-gray-600">
-            <span className="text-blue-500">📋</span>
+          <div className="flex items-center gap-2 text-sm ">
+            <span className="">📋</span>
             Type: <span className="font-medium px-2 py-0.5 bg-blue-100 rounded-full text-blue-700">{contest.type}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
+          <div className="flex items-center gap-2 text-sm">
             <span className="text-green-500">💵</span>
             Entry Fee: <span className="font-bold text-green-600">${contest.price}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
+          <div className="flex items-center gap-2 text-sm ">
             <span className="text-yellow-500">🏆</span>
             Prize Money: <span className="font-bold text-yellow-600">${contest.prizeMoney}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-gray-600">
+          <div className="flex items-center gap-2 text-sm ">
             <span className="text-purple-500">📅</span>
             Deadline: <span className="font-medium">{new Date(contest.deadline).toLocaleDateString('en-US', {
               year: 'numeric',
@@ -165,12 +165,12 @@ const ContestCard = ({ contest, alreadyPaid, navigate }) => {
           </div>
         </div>
 
-        {/* ✅ LIVE COUNTDOWN TIMER */}
+    
         <div className="mb-5">
           <CountdownTimer deadline={contest.deadline} />
         </div>
 
-        {/* Status Badge */}
+      
         <div className="mb-4">
           <span className="inline-block px-4 py-2 text-xs font-bold rounded-full bg-green-100 text-green-800">
             ✅ Approved
@@ -180,11 +180,11 @@ const ContestCard = ({ contest, alreadyPaid, navigate }) => {
         {/* Action Section - Push to bottom */}
         <div className="mt-auto">
           {isExpired ? (
-            // Contest Ended
-            <div className="p-4 bg-gray-100 border-2 border-gray-300 rounded-2xl text-center">
+          
+            <div className="p-4 border-2 border-gray-300 rounded-2xl text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <span className="text-2xl">🏁</span>
-                <span className="font-bold text-gray-700">Contest Ended</span>
+                <span className="font-bold">Contest Ended</span>
               </div>
               <button
                 onClick={() => navigate(`/contests/${contest._id}`)}
@@ -195,11 +195,11 @@ const ContestCard = ({ contest, alreadyPaid, navigate }) => {
             </div>
           ) : alreadyPaid ? (
         
-            <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-300 rounded-2xl text-center">
+            <div className="p-4 border-2 border-emerald-300 rounded-2xl text-center">
               <div className="flex items-center justify-center gap-3 mb-3">
                 <span className="text-3xl">✅</span>
                 <div>
-                  <h4 className="font-bold text-lg text-emerald-800">Already Joined!</h4>
+                  <h4 className="font-bold text-lg">Already Joined!</h4>
                   <p className="text-sm text-emerald-600 mt-1">Payment completed ✓</p>
                 </div>
               </div>
@@ -208,7 +208,7 @@ const ContestCard = ({ contest, alreadyPaid, navigate }) => {
                 onClick={() => navigate(`/contests/${contest._id}`)}
                 
                 // onClick={() => handleDetails(contest._id)}
-                className="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold transition-all duration-300"
+                className="w-full  hover:bg-emerald-600 text-white py-3 rounded-xl font-bold transition-all duration-300"
               >
                  View Contests
               </button>
@@ -217,7 +217,7 @@ const ContestCard = ({ contest, alreadyPaid, navigate }) => {
             // Join Button
             <button
               onClick={() => navigate(`/contests/${contest._id}`)}
-              className="w-full bg-gradient-to-r from-indigo-500 to-blue-600 text-white py-4 rounded-2xl font-bold text-lg shadow-xl hover:from-indigo-600 hover:to-blue-700 hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"
+              className="w-full  py-4 rounded-2xl font-bold text-lg shadow-xl hover:from-indigo-600 hover:to-blue-700 hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300"
             >
               💳 Pay ${contest.price} & Join Now
             </button>
@@ -274,7 +274,7 @@ const AllContests = () => {
 
   if (contestsLoading || participatedLoading) {
     return (
-      <div className="flex flex-col justify-center items-center min-h-screen p-6 bg-gray-50">
+      <div className="flex flex-col justify-center items-center min-h-screen p-6 ">
         <span className="loading loading-infinity loading-lg text-indigo-600"></span>
         <p className="mt-4 text-gray-600 animate-pulse">Loading contests...</p>
       </div>
@@ -282,7 +282,7 @@ const AllContests = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen ">
       <title>All Contest | Create Arena</title>
       
     
